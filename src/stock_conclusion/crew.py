@@ -11,12 +11,25 @@ import yfinance as yf
 from crewai_tools import ScrapeWebsiteTool
 from crewai.tools import tool
 
+import logging
+
+logging.basicConfig(
+    filename="crewai.log",
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+
 @CrewBase
 class StockConclusion():
     """StockConclusion crew"""
 
     agents: List[BaseAgent]
     tasks: List[Task]
+
+    scrape_tool = ScrapeWebsiteTool()
 
     # Learn more about YAML configuration files here:
     # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
@@ -30,9 +43,9 @@ class StockConclusion():
             config=self.agents_config['researcher'], # type: ignore[index]
             verbose=True,
             tools=[
-                scrape_tool,
-                stock_news
-            ]
+                self.scrape_tool,
+                stock_news,
+            ],
         )
 
     @agent
@@ -97,6 +110,7 @@ class StockConclusion():
     @crew
     def crew(self) -> Crew:
         """Creates the StockConclusion crew"""
+
         # To learn how to add knowledge sources to your crew, check out the documentation:
         # https://docs.crewai.com/concepts/knowledge#what-is-knowledge
 
@@ -108,17 +122,21 @@ class StockConclusion():
             # process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
         )
 
-
-scrape_tool = ScrapeWebsiteTool()
-
 @tool("Stock News")
 def stock_news(ticker):
     """
     Useful to get news about a stock.
     The input should be a ticker, for example AAPL, NET.
     """
-    ticker = yf.Ticker(ticker)
-    return ticker.news
+    try:
+        print(f'ticker : {ticker}')
+        ticker = yf.Ticker(ticker)
+        print(f'ticker : {ticker}')
+        return ticker.news
+    except Exception as e:
+        logger.debug(str(e))
+        raise f"[Error fetching Stock News]: {str(e)}"
+
 
 @tool("Stock Price")
 def stock_price(ticker):
@@ -126,9 +144,12 @@ def stock_price(ticker):
     Get the exact stock price.
     The input should be a ticker, for example AAPL, NET.
     """
-    ticker = yf.Ticker(ticker)
-    print(f'ticket : {ticker}')
-    return ticker.history(period="1mo")
+    try:
+        ticker = yf.Ticker(ticker)
+        print(f'ticker : {ticker}')
+        return ticker.history(period="1mo")
+    except Exception as e:
+        raise Exception(f"An error occurred from stock_price: {e}")
 
 @tool("Income Statement")
 def income_stmt(ticker):
@@ -136,8 +157,12 @@ def income_stmt(ticker):
     Useful to get the income statement of a company.
     The input should be a ticker, for example AAPL, NET.
     """
-    ticker = yf.Ticker(ticker)
-    return ticker.income_stmt
+    try:
+        ticker = yf.Ticker(ticker)
+        return ticker.income_stmt
+    except Exception as e:
+        raise Exception(f"An error occurred from income_stmt: {e}")
+
 
 @tool("Balance Sheet")
 def balance_sheet(ticker):
@@ -145,8 +170,11 @@ def balance_sheet(ticker):
     Useful to get the balance sheet of a company.
     The input should be a ticker, for example AAPL, NET.
     """
-    ticker = yf.Ticker(ticker)
-    return ticker.balance_sheet
+    try:
+        ticker = yf.Ticker(ticker)
+        return ticker.balance_sheet
+    except Exception as e:
+        raise Exception(f"An error occurred from balance_sheet: {e}")
 
 @tool("Insider Transactions")
 def insider_transactions(ticker):
@@ -154,5 +182,8 @@ def insider_transactions(ticker):
     Useful to get the insider transactions of a stock.
     The input should be a ticker, for example AAPL, NET.
     """
-    ticker = yf.Ticker(ticker)
-    return ticker.insider_transactions
+    try:
+        ticker = yf.Ticker(ticker)
+        return ticker.insider_transactions
+    except Exception as e:
+        raise Exception(f"An error occurred from insider_transactions: {e}")
