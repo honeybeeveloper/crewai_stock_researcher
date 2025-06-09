@@ -18,13 +18,13 @@ def run():
     Run the crew.
     """
     inputs = {
-        'company' : 'Apple'
+        'company' : 'nvidia'
     }
     
     try:
         StockConclusion().crew().kickoff(inputs=inputs)
     except Exception as e:
-        raise Exception(f"An error occurred while running the crew: {e}")
+        raise Exception(f"An error occurred while running the crew: {str(e)}")
 
 
 def train():
@@ -32,13 +32,13 @@ def train():
     Train the crew for a given number of iterations.
     """
     inputs = {
-       'company' : 'Apple'
+        'company': 'Apple'
     }
     try:
         StockConclusion().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
 
     except Exception as e:
-        raise Exception(f"An error occurred while training the crew: {e}")
+        raise Exception(f"An error occurred while training the crew: {str(e)}")
 
 def replay():
     """
@@ -48,18 +48,25 @@ def replay():
         StockConclusion().crew().replay(task_id=sys.argv[1])
 
     except Exception as e:
-        raise Exception(f"An error occurred while replaying the crew: {e}")
+        raise Exception(f"An error occurred while replaying the crew: {str(e)}")
 
 def test():
     """
     Test the crew execution and returns the results.
     """
     inputs = {
-       'company' : 'Apple'
+       'company' : 'nvidia'
     }
     
     try:
         StockConclusion().crew().test(n_iterations=int(sys.argv[1]), eval_llm=sys.argv[2], inputs=inputs)
 
     except Exception as e:
-        raise Exception(f"An error occurred while testing the crew: {e}")
+        raise Exception(f"An error occurred while testing the crew: {str(e)}")
+
+
+
+if __name__ == '__main__':
+    key = environ.get('OPENAI_API_KEY')
+    print(f'api key : {key}')
+    run()
