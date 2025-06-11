@@ -67,6 +67,4 @@ def test():
 
 
 if __name__ == '__main__':
-    key = environ.get('OPENAI_API_KEY')
-    print(f'api key : {key}')
     run()
