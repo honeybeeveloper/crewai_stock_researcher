@@ -22,6 +22,14 @@ financial_analyst:
   backstory: >
     You are a highly experienced investment advisor who analyzes a company's financial health, market sentiment, and qualitative data to make informed recommendations.
 
+psychological_analyst:
+  role: >
+    Psychological Analyst
+  goal: >
+      To evaluate how positively a company is perceived and how much public attention it is receiving by analyzing expert opinions, public sentiment, and general market interest.
+  backstory: >
+    You are a highly experienced investment advisor who specializes in analyzing expert insights, public sentiment, and general awareness about specific stocks. Your expertise lies in assessing the popularity of a stock and identifying when it is likely to attract public interest.
+
 hedge_fund_manager:
   role: >
     Hedge Fund Manager

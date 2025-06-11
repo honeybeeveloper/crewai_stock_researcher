@@ -19,6 +19,15 @@ financial_analyst_task:
     Your final answer MUST be a report with an overview of {company}'s revenue, earnings, cash flow, and other important financial indicators.
   agent: financial_analyst
 
+psychological_analyst_task:
+  description: >
+    Analyze {company}'s expert opinions and public sentiment to evaluate how positively company is perceived and how much attention a specific stock is receiving. 
+    This includes gathering insights from analysts, social media, forums, and news, assessing the stock’s popularity, and predicting when it might gain significant public interest.
+  expected_output: >
+    comprehensive report summarizing expert sentiment, public opinion, stock popularity metrics, and a forecast of when the stock is likely to receive increased attention. 
+    The report should include key insights, sentiment trends, popularity indicators, and investment-relevant conclusions.
+  agent: psychological_analyst
+
 hedge_fund_manager_task:
   description: >
     Based on the research, technical analysis, and financial analysis reports, provide a detailed investment recommendation for {company}'s stock.
