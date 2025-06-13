@@ -7,9 +7,12 @@ from typing import List
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
 
 
+import datetime
 import yfinance as yf
 from crewai_tools import ScrapeWebsiteTool
 from crewai.tools import tool
+from stock_conclusion.tools.websearch_tool import WebSearchTool
+from stock_conclusion.tools.sentimentanalysis_tool import SentimentAnalysisTool
 
 import logging
 
@@ -21,6 +24,13 @@ logging.basicConfig(
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
+now_str = datetime.datetime.now().strftime('%y%m%d_%H%M%S')
+
+# Tool Instance
+scrape_tool = ScrapeWebsiteTool()
+web_search_tool = WebSearchTool()
+sentiment_analysis_tool = SentimentAnalysisTool()
+
 
 @CrewBase
 class StockConclusion():
@@ -29,21 +39,15 @@ class StockConclusion():
     agents: List[BaseAgent]
     tasks: List[Task]
 
-    scrape_tool = ScrapeWebsiteTool()
 
-    # Learn more about YAML configuration files here:
-    # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
-    # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
-    
-    # If you would like to add tools to your agents, you can learn more about it here:
-    # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
     def researcher(self) -> Agent:
         return Agent(
             config=self.agents_config['researcher'], # type: ignore[index]
             verbose=True,
             tools=[
-                self.scrape_tool,
+                scrape_tool,
+                web_search_tool,
                 stock_news,
             ],
         )
@@ -69,6 +73,16 @@ class StockConclusion():
                 insider_transactions
             ] 
         )
+
+    @agent
+    def psychological_analyst(self) -> Agent:
+        return Agent(
+            config=self.agents_config['psychological_analyst'],  # type: ignore[index]
+            verbose=True,
+            tools=[
+                sentiment_analysis_tool,
+            ]
+        )
     
     @agent
     def hedge_fund_manager(self) -> Agent:
@@ -90,21 +104,32 @@ class StockConclusion():
     def technical_analysis(self) -> Task:
         return Task(
             config=self.tasks_config['technical_analyst_task'], # type: ignore[index]
-            output_file='technical_analyst_output.md'
+            # context=[self.research],
+            output_file = f"technical_analyst_{now_str}.md",
         )
 
     @task
     def financial_analysis(self) -> Task:
         return Task(
             config=self.tasks_config['financial_analyst_task'], # type: ignore[index]
-            output_file='financial_analyst_output.md'
+            # context=[self.research],
+            output_file=f"financial_analyst_{now_str}.md",
+        )
+
+    @task
+    def psychological_analysis(self) -> Task:
+        return Task(
+            config=self.tasks_config['psychological_analyst_task'],  # type: ignore[index]
+            # context=[self.research],
+            output_file=f"psychological_analyst_{now_str}.md",
         )
     
     @task
     def investment_recommendation(self) -> Task:
         return Task(
             config=self.tasks_config['hedge_fund_manager_task'], # type: ignore[index]
-            output_file='hedge_fund_manager_output.md'
+            # context=[self.technical_analysis, self.financial_analysis, self.psychological_analysis],
+            output_file=f"hedge_fund_manager_{now_str}.md",
         )
 
     @crew
