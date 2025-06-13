@@ -18,7 +18,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'company' : 'nvidia'
+        'company' : 'The Trade Desk'
     }
     
     try:
