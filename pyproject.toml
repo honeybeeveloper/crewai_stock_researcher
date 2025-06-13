@@ -7,7 +7,10 @@ authors = [
 ]
 requires-python = ">=3.10,<3.14"
 dependencies = [
+    "beautifulsoup4>=4.13.4",
     "crewai[tools]>=0.126.0,<1.0.0",
+    "nrclex",
+    "textblob>=0.19.0",
     "yfinance>=0.2.61",
 ]
 
