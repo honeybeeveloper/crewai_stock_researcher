@@ -1,54 +1,58 @@
-# StockConclusion Crew
+# 🧠 CrewAI 기반 주식 보유 결정 에이전트
 
-Welcome to the StockConclusion Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+## 📌 프로젝트 개요
 
-## Installation
+본 프로젝트는 [CrewAI](https://docs.crewai.com/)를 활용하여 여러 개의 전문 에이전트들이 협업을 통해 **주식 보유 여부를 판단**하도록 설계된 시스템입니다.  
+특히 이 프로젝트는 **뉴스 감정 분석 도구(Sentiment Analysis Tool)** 를 추가하여, 최근 뉴스의 8가지의 감정이 주식 결정에 반영 되도록 구성되었습니다.
 
-Ensure you have Python >=3.10 <3.14 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+---
 
-First, if you haven't already, install uv:
+## 🚀 주요 기능
+
+- **에이전트 기반 역할 분담**  
+  - 각 에이전트는 특정 역할(자료 수집가, 재무 분석가, 기술 분석가, 감정 분석가 등)을 수행 하며 협업을 통해 판단을 내립니다.
+  
+- **뉴스 감정 분석 도구 통합**
+  - 뉴스 데이터를 기반으로 텍스트 감정을 분석합니다.
+  - 주가와 직접적인 관련이 있는 뉴스만 필터링하여 반영합니다.
+  
+- **보유/매도/매수 결정 로직**
+  - 재무 지표, 기술적 분석, 뉴스 감정 분석 결과를 종합하여 결정합니다.
+  
+- **유연한 프롬프트 기반 사용자 질의**
+  - 사용자는 종목명 또는 기업명을 입력하면 에이전트가 팀을 구성하여 종합 판단을 제공합니다.
+
+---
+
+## 🛠️ 사용 기술
+
+- **[CrewAI](https://crewai.com)**
+- **OpenAI**
+
+---
+
+## 📂 프로젝트 구조
 
 ```bash
-pip install uv
+📁 stock-conclusion/
+│
+├── config/
+│   ├── agents.yaml
+│   ├── tasks.yaml
+│
+├── tools/
+│   ├── sentimentanalysis_tool.py       # 감정 분석 도구
+│   └── websearch_tool.py     # 웹 수집 도구
+│
+├── crew.py
+├── main.py                   
+└── README.md
 ```
 
-Next, navigate to your project directory and install the dependencies:
-
-(Optional) Lock the dependencies and install them by using the CLI command:
+## 💼 output
 ```bash
-crewai install
+financial_analysis.md
+psychological_analysist.md
+techinical_analysis.md
+hedge_fund_manager.md
 ```
-### Customizing
-
-**Add your `OPENAI_API_KEY` into the `.env` file**
-
-- Modify `src/stock_conclusion/config/agents.yaml` to define your agents
-- Modify `src/stock_conclusion/config/tasks.yaml` to define your tasks
-- Modify `src/stock_conclusion/crew.py` to add your own logic, tools and specific args
-- Modify `src/stock_conclusion/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
-
-```bash
-$ crewai run
-```
-
-This command initializes the stock-conclusion Crew, assembling the agents and assigning them tasks as defined in your configuration.
-
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
-
-## Understanding Your Crew
-
-The stock-conclusion Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
-
-## Support
-
-For support, questions, or feedback regarding the StockConclusion Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
-
-Let's create wonders together with the power and simplicity of crewAI.
