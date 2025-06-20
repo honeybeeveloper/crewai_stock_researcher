@@ -111,7 +111,7 @@ class StockConclusion():
     def sentiment_analysis(self) -> Task:
         return Task(
             config=self.tasks_config['sentiment_analysis_task'],  # type: ignore[index]
-            output_file=f"psychological_analysis_{now_str}.md",
+            output_file=f"sentiment_analysis_{now_str}.md",
         )
     
     @task
