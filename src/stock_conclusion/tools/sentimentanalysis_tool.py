@@ -19,8 +19,8 @@ class SentimentAnalysisTool(BaseTool):
 
     def _run(self, text: str) -> str:
         emotion = NRCLex(text)
-        print(emotion.raw_emotion_scores)
-        print(emotion.top_emotions)
+        print(f">>> emotion.raw_emotion_scores : {emotion.raw_emotion_scores}")
+        print(f">>> emotion.top_emotions : {emotion.top_emotions}")
 
         raw_scores = emotion.raw_emotion_scores
         sorted_scores = sorted(raw_scores.items(), key=lambda x: x[1], reverse=True)
