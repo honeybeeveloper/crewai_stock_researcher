@@ -6,7 +6,8 @@ from typing import List
 
 import datetime
 from crewai_tools import ScrapeWebsiteTool
-from crewai.tools import tool
+
+from stock_conclusion import app_config
 from stock_conclusion.tools.websearch_tool import WebSearchTool
 from stock_conclusion.tools.sentimentanalysis_tool import SentimentAnalysisTool
 
@@ -32,6 +33,8 @@ class StockConclusion():
 
     agents: List[BaseAgent]
     tasks: List[Task]
+
+    company = app_config.company
 
 
     @agent
@@ -96,7 +99,7 @@ class StockConclusion():
         return Task(
             config=self.tasks_config['technical_analysis_task'], # type: ignore[index]
             context=[self.research()],
-            output_file = f"technical_analysis_{now_str}.md",
+            output_file = f"{self.company}_technical_analysis_{now_str}.md",
         )
 
     @task
@@ -104,14 +107,14 @@ class StockConclusion():
         return Task(
             config=self.tasks_config['financial_analysis_task'], # type: ignore[index]
             context=[self.research()],
-            output_file=f"financial_analysis_{now_str}.md",
+            output_file=f"{self.company}_financial_analysis_{now_str}.md",
         )
 
     @task
     def sentiment_analysis(self) -> Task:
         return Task(
             config=self.tasks_config['sentiment_analysis_task'],  # type: ignore[index]
-            output_file=f"sentiment_analysis_{now_str}.md",
+            output_file=f"{self.company}_sentiment_analysis_{now_str}.md",
         )
     
     @task
@@ -119,7 +122,7 @@ class StockConclusion():
         return Task(
             config=self.tasks_config['stock_decision_task'], # type: ignore[index]
             context=[self.technical_analysis(), self.financial_analysis(), self.sentiment_analysis()],
-            output_file=f"investment_decision_{now_str}.md",
+            output_file=f"{self.company}_investment_decision_{now_str}.md",
         )
 
     @crew

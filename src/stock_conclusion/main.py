@@ -2,8 +2,7 @@
 import sys
 import warnings
 
-from datetime import datetime
-
+from stock_conclusion import app_config
 from stock_conclusion.crew import StockConclusion
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
@@ -18,7 +17,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'company' : 'The Trade Desk'
+        'company' : app_config.company
     }
     
     try:
@@ -32,7 +31,7 @@ def train():
     Train the crew for a given number of iterations.
     """
     inputs = {
-        'company': 'Apple'
+        'company' : app_config.company
     }
     try:
         StockConclusion().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
@@ -55,7 +54,7 @@ def test():
     Test the crew execution and returns the results.
     """
     inputs = {
-       'company' : 'nvidia'
+       'company' : app_config.company
     }
     
     try:
@@ -63,7 +62,6 @@ def test():
 
     except Exception as e:
         raise Exception(f"An error occurred while testing the crew: {str(e)}")
-
 
 
 if __name__ == '__main__':
