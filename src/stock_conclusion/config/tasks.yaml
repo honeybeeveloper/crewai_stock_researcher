@@ -9,7 +9,18 @@ technical_analysis_task:
   description: >
     Conduct a technical analysis of {company}'s stock price movements. Identify key support and resistance levels as well as any relevant chart patterns.
   expected_output: >
-    Your final answer MUST be a report including potential entry points, price targets, and any other relevant technical indicators.
+    expected_output: >
+      Your final answer MUST be a structured report in markdown format with the following sections:
+
+      1. **Overview**
+      2. **Current Trend**
+      3. **Support and Resistance Levels**
+      4. **Entry Points**
+      5. **Price Targets**
+      6. **Key Technical Indicators**
+
+      DO NOT include meta statements like "I now know the final answer" or "I will now analyze...".
+      Begin directly with the report content.
   agent: technical_analyst
 
 financial_analysis_task:
